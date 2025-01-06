@@ -5,6 +5,7 @@ import Target from "./components/Target";
 import Confetti from "react-confetti";
 import { Fireworks } from "@fireworks-js/react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import logo from "./assets/Yiddish Logo 1 (1) (1).jpg";
 
 function App() {
   const [current, setCurrent] = useState(0);
@@ -15,12 +16,11 @@ function App() {
   const [totaldonation, settotal] = useState(0);
 
   useEffect(() => {
-    const ws = new WebSocket("wss://absocket.onrender.com/ws");
+    const ws = new WebSocket("wss://absocket-gm2g.onrender.com/ws");
 
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        console.log("Received data:", data);
 
         switch (data.action) {
           case "update_progress":
@@ -30,15 +30,12 @@ function App() {
 
           case "totaldonation":
             settotal(data.total);
-            break;         
+            break;
 
           case "update_p":
             if (data.cur && typeof data.cur.show_progress === "string") {
               const newShowProgress = data.cur.show_progress === "TRUE";
               setShowProgress(newShowProgress);
-              console.log("Setting showProgress to:", newShowProgress);
-            } else {
-              console.error("Invalid data format for update_p:", data.cur);
             }
             break;
 
@@ -48,16 +45,15 @@ function App() {
 
           case "confetti":
             setShowConfetti(true);
-            setTimeout(() => setShowConfetti(false), 10000);
+            setTimeout(() => setShowConfetti(false), 40000);
             break;
 
           case "fireworks":
             setShowFireworks(true);
-            setTimeout(() => setShowFireworks(false), 10000);
+            setTimeout(() => setShowFireworks(false), 40000);
             break;
 
           default:
-            console.warn("Unhandled action type:", data.action);
             break;
         }
       } catch (error) {
@@ -68,28 +64,53 @@ function App() {
     return () => ws.close();
   }, []);
 
-  useEffect(() => {
-    console.log("showProgress state updated:", showProgress);
-  }, [showProgress]);
-  
-
   return (
-    <div className="min-h-screen w-full flex flex-col justify-between px-4">
-      <div className="flex-0 bg-gray-100 flex justify-center items-center">
-        {showProgress ? (
-          <Progres target={target} current={current} />
-        ) : (
-          <Target donationAmount={totaldonation}/>
-        )}
+    <div className="min-h-screen w-full flex flex-col justify-between px-4 bg-gradient-to-b from-[#ADBBDA] to-[#EDE8F5]">
+      {/* Header Section with Logos and Components */}
+      <div className="flex-0 bg-transparent flex justify-center items-center space-x-6 ">
+        {/* Left Logo */}
+        <img
+          src={logo}
+          alt="Logo"
+          className="h-40 w-auto object-contain"
+          style={{ marginRight: "1rem" }}
+        />
+
+        {/* Main Content */}
+        <div className="flex-grow flex justify-center">
+          {showProgress ? (
+            <Progres target={target} current={current} />
+          ) : (
+            <Target donationAmount={totaldonation} />
+          )}
+        </div>
+
+        {/* Right Logo */}
+        <img
+          src={logo}
+          alt="Logo"
+          className="h-40 w-auto object-contain"
+          style={{ marginLeft: "1rem" }}
+        />
       </div>
-      <div className="flex-[3] bg-gray-200 flex flex-col justify-center items-center space-y-4">
+
+      {/* Donation Section */}
+      <div className="flex-[3] flex flex-col justify-center items-center space-y-4 bg-transparent border-transparent">
         <Donationbox />
       </div>
-      {showConfetti && <Confetti numberOfPieces={1000} />}
+
+      {/* Confetti and Fireworks */}
+      {showConfetti && <Confetti numberOfPieces={2000} />}
       {showFireworks && (
         <Fireworks
-          options={{ rocketsPoint: { min: 0, max: 100 }, particles: 500 }}
-          style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+          options={{ rocketsPoint: { min: 0, max: 100 }, particles: 800 }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+          }}
         />
       )}
     </div>
