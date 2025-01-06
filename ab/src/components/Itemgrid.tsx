@@ -183,7 +183,7 @@ const ItemGrid = () => {
                 className="p-4 border border-gray-400 rounded flex flex-col justify-center items-center bg-white shadow-md"
               >
                 <h3 className="font-semibold">{item.name}</h3>
-                <p className="text-gray-600">$ {item.value}</p>
+                <p className="text-gray-600">${item.value}</p>
               </motion.div>
             ))}
           </motion.div>
