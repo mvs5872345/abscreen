@@ -5,7 +5,7 @@ import Target from "./components/Target";
 import Confetti from "react-confetti";
 import { Fireworks } from "@fireworks-js/react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import logo from "./assets/Yiddish Logo 1 (1) (1).jpg";
+import logo from "./assets/Untitled_design_(17).png";
 
 function App() {
   const [current, setCurrent] = useState(0);
@@ -45,12 +45,12 @@ function App() {
 
           case "confetti":
             setShowConfetti(true);
-            setTimeout(() => setShowConfetti(false), 40000);
+            setTimeout(() => setShowConfetti(false), 10000);
             break;
 
           case "fireworks":
             setShowFireworks(true);
-            setTimeout(() => setShowFireworks(false), 40000);
+            setTimeout(() => setShowFireworks(false), 10000);
             break;
 
           default:
@@ -61,8 +61,20 @@ function App() {
       }
     };
 
-    return () => ws.close();
-  }, []);
+    // Send a "ping" message every 3 minutes
+    const pingInterval = setInterval(() => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send("ping");
+        console.log("Sent ping");
+      }
+    }, 180000); // 3 minutes in milliseconds
+
+    // Cleanup the WebSocket connection and ping interval
+    return () => {
+      clearInterval(pingInterval);
+      ws.close();
+    };
+  }, []); // Empty dependency array means this runs once on mount
 
   return (
     <div className="min-h-screen w-full flex flex-col justify-between px-4 bg-gradient-to-b from-[#ADBBDA] to-[#EDE8F5]">

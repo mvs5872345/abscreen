@@ -1,15 +1,27 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TargetProps {
   donationAmount: number; // Prop for the donation amount
 }
 
 const Target: React.FC<TargetProps> = ({ donationAmount }) => {
-  // State to hold the current color
   const [color, setColor] = useState("text-blue-600");
+  const [currentDigits, setCurrentDigits] = useState<string[]>([]);
 
-  // Effect to change color after some time
+  // Effect to split the donation amount into digits and animate them
+  useEffect(() => {
+    const newDigits = donationAmount.toString().split("");
+    setCurrentDigits((prevDigits) => {
+      if (prevDigits.join("") !== newDigits.join("")) {
+        return newDigits;
+      }
+      return prevDigits;
+    });
+  }, [donationAmount]);
+
+  // Effect to change color periodically
   useEffect(() => {
     const colors = ["text-blue-600", "text-red-600", "text-green-600", "text-purple-600"];
     let currentColorIndex = 0;
@@ -24,6 +36,13 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
     return () => clearInterval(intervalId);
   }, []);
 
+  // Framer Motion animation variants
+  const digitAnimation = {
+    initial: { y: -100, opacity: 0 },
+    animate: { y: 0, opacity: 1 },
+    exit: { y: 100, opacity: 0 },
+  };
+
   return (
     <Container className="p-2 h-100">
       <Row className="h-100">
@@ -37,22 +56,47 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
             }}
           >
             <div className="text-center">
-              <h1
-                className={`font-extrabold ${color} mb-4`}
+              <div
+                className="flex justify-center space-x-4"
                 style={{
-                  fontSize: "clamp(2rem, 5vw, 6rem)",
+                  fontSize: "clamp(2rem, 5vw, 6rem)", // Increased size
+                  fontWeight: "bold", // Added bold styling
                 }}
               >
-                Total Donations
-              </h1>
-              <p
-                className="text-gray-700 font-bold"
-                style={{
-                  fontSize: "clamp(1.5rem, 3vw, 4rem)",
-                }}
-              >
-                ${donationAmount.toLocaleString()}
-              </p>
+                {currentDigits.map((digit, index) => (
+                  <AnimatePresence key={index}>
+                    <motion.div
+                      key={`${digit}-${index}`}
+                      variants={digitAnimation}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={{
+                        duration: 0.6, // Slows down the animation
+                        delay: index * 0.2, // Stagger animation for each digit
+                      }}
+                      className="inline-block"
+                      style={{
+                        lineHeight: 1, // Ensures numbers stay visually centered
+                        fontFamily: "'Roboto', sans-serif", // Clean, modern font
+                      }}
+                    >
+                      {digit}
+                    </motion.div>
+                  </AnimatePresence>
+                ))}
+                {/* Adding the dollar sign after the digits */}
+                <div
+                  className="inline-block"
+                  style={{
+                    fontSize: "clamp(2rem, 5vw, 6rem)",
+                    lineHeight: 1, // Ensures dollar sign stays level with digits
+                    fontFamily: "'Roboto', sans-serif", // Matches the font style
+                  }}
+                >
+                  $
+                </div>
+              </div>
             </div>
           </div>
         </Col>
