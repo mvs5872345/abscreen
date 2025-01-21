@@ -43,7 +43,7 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
                   fontSize: "clamp(2rem, 5vw, 6rem)",
                 }}
               >
-                Total Donations
+                
               </h1>
               <p
                 className="text-gray-700 font-bold"
