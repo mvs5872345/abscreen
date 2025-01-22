@@ -63,6 +63,17 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
                   fontWeight: "bold", // Added bold styling
                 }}
               >
+                {/* Adding the dollar sign before the digits */}
+                <div
+                  className="inline-block"
+                  style={{
+                    fontSize: "clamp(2rem, 5vw, 6rem)",
+                    lineHeight: 1, // Ensures dollar sign stays level with digits
+                    fontFamily: "'Roboto', sans-serif", // Matches the font style
+                  }}
+                >
+                  $
+                </div>
                 {currentDigits.map((digit, index) => (
                   <AnimatePresence key={index}>
                     <motion.div
@@ -85,17 +96,6 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
                     </motion.div>
                   </AnimatePresence>
                 ))}
-                {/* Adding the dollar sign after the digits */}
-                <div
-                  className="inline-block"
-                  style={{
-                    fontSize: "clamp(2rem, 5vw, 6rem)",
-                    lineHeight: 1, // Ensures dollar sign stays level with digits
-                    fontFamily: "'Roboto', sans-serif", // Matches the font style
-                  }}
-                >
-                  $
-                </div>
               </div>
             </div>
           </div>
