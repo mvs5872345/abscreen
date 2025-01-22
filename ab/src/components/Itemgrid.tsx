@@ -29,7 +29,13 @@ const ItemGrid = () => {
       if (data.action === "update_items" && data.item) {
         let newItems: Item[] = Object.entries(data.item).map(([key, value]) => {
           const [innerKey, innerValue] = Object.entries(value)[0];
-          return { id: key, name: innerKey, value: innerValue };
+          // Format the value using Intl.NumberFormat
+          const formattedValue = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+          }).format(Number(innerValue));
+          return { id: key, name: innerKey, value: formattedValue };
         });
     
         if (items.length === 0) {
@@ -105,8 +111,8 @@ const ItemGrid = () => {
                 transition={{ duration: 4.0, ease: "easeInOut" }}
                 className="p-4 border border-gray-400 rounded flex flex-col justify-center items-center bg-white shadow-md"
               >
-                <h3 className="font-ha-yetzira text-3xl">{item.name}</h3>
-                <p className="font-franknatan text-2xl text-gray-600">{item.value}</p>
+                <h3 className="font-ha-yetzira text-4xl">{item.name}</h3> {/* Increased text size */}
+                <p className="font-franknatan text-3xl text-gray-600">{item.value}</p> {/* Increased text size */}
               </motion.div>
             ))}
           </motion.div>
