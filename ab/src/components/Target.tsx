@@ -8,17 +8,15 @@ interface TargetProps {
 
 const Target: React.FC<TargetProps> = ({ donationAmount }) => {
   const [color, setColor] = useState("text-blue-600");
-  const [currentDigits, setCurrentDigits] = useState<string[]>([]);
+  const [formattedAmount, setFormattedAmount] = useState<string>("");
 
-  // Effect to split the donation amount into digits and animate them
+  // Effect to format the donation amount with commas
   useEffect(() => {
-    const newDigits = donationAmount.toString().split("");
-    setCurrentDigits((prevDigits) => {
-      if (prevDigits.join("") !== newDigits.join("")) {
-        return newDigits;
-      }
-      return prevDigits;
+    const formatter = new Intl.NumberFormat("en-US", {
+      style: "decimal",
+      minimumFractionDigits: 0,
     });
+    setFormattedAmount(formatter.format(donationAmount));
   }, [donationAmount]);
 
   // Effect to change color periodically
@@ -63,7 +61,7 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
                   fontWeight: "bold", // Added bold styling
                 }}
               >
-                {/* Adding the dollar sign before the digits */}
+                {/* Adding the dollar sign before the formatted amount */}
                 <div
                   className="inline-block"
                   style={{
@@ -74,7 +72,7 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
                 >
                   $
                 </div>
-                {currentDigits.map((digit, index) => (
+                {formattedAmount.split("").map((digit, index) => (
                   <AnimatePresence key={index}>
                     <motion.div
                       key={`${digit}-${index}`}
