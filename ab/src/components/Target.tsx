@@ -9,6 +9,7 @@ interface TargetProps {
 const Target: React.FC<TargetProps> = ({ donationAmount }) => {
   const [color, setColor] = useState("text-blue-600");
   const [formattedAmount, setFormattedAmount] = useState<string>("");
+  const [displayedAmount, setDisplayedAmount] = useState(0);
 
   // Effect to format the donation amount with commas
   useEffect(() => {
@@ -16,8 +17,28 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
       style: "decimal",
       minimumFractionDigits: 0,
     });
-    setFormattedAmount(formatter.format(donationAmount));
-  }, [donationAmount]);
+    setFormattedAmount(formatter.format(displayedAmount));
+  }, [displayedAmount]);
+
+  // Effect to increment the displayed amount to the target donation amount
+  useEffect(() => {
+    const incrementAmount = 119; // Increment value
+    const interval = 10; // Interval in milliseconds
+
+    if (displayedAmount < donationAmount) {
+      const incrementInterval = setInterval(() => {
+        setDisplayedAmount((prev) => {
+          const newAmount = prev + incrementAmount;
+          if (newAmount >= donationAmount) {
+            clearInterval(incrementInterval);
+            return donationAmount;
+          }
+          return newAmount;
+        });
+      }, interval);
+      return () => clearInterval(incrementInterval);
+    }
+  }, [donationAmount, displayedAmount]);
 
   // Effect to change color periodically
   useEffect(() => {
