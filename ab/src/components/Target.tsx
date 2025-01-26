@@ -1,6 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 interface TargetProps {
   donationAmount: number; // Prop for the donation amount
@@ -55,13 +54,6 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Framer Motion animation variants
-  const digitAnimation = {
-    initial: { y: -100, opacity: 0 },
-    animate: { y: 0, opacity: 1 },
-    exit: { y: 100, opacity: 0 },
-  };
-
   return (
     <Container className="p-2 h-100">
       <Row className="h-100">
@@ -94,26 +86,16 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
                   $
                 </div>
                 {formattedAmount.split("").map((digit, index) => (
-                  <AnimatePresence key={index}>
-                    <motion.div
-                      key={`${digit}-${index}`}
-                      variants={digitAnimation}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      transition={{
-                        duration: 0.6, // Slows down the animation
-                        delay: index * 0.2, // Stagger animation for each digit
-                      }}
-                      className="inline-block"
-                      style={{
-                        lineHeight: 1, // Ensures numbers stay visually centered
-                        fontFamily: "'Roboto', sans-serif", // Clean, modern font
-                      }}
-                    >
-                      {digit}
-                    </motion.div>
-                  </AnimatePresence>
+                  <div
+                    key={`${digit}-${index}`}
+                    className="inline-block"
+                    style={{
+                      lineHeight: 1, // Ensures numbers stay visually centered
+                      fontFamily: "'Roboto', sans-serif", // Clean, modern font
+                    }}
+                  >
+                    {digit}
+                  </div>
                 ))}
               </div>
             </div>
