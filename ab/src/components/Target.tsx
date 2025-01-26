@@ -6,7 +6,6 @@ interface TargetProps {
 }
 
 const Target: React.FC<TargetProps> = ({ donationAmount }) => {
-  const [color, setColor] = useState("text-blue-600");
   const [formattedAmount, setFormattedAmount] = useState<string>("");
   const [displayedAmount, setDisplayedAmount] = useState(0);
 
@@ -44,7 +43,7 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
       <Row className="h-100">
         <Col className="d-flex align-items-center justify-content-center">
           <div
-            className={`bg-white shadow-lg rounded-lg flex items-center justify-center w-100 ${color}`}
+            className={`bg-white shadow-lg rounded-lg flex items-center justify-center w-100 text-black`}
             style={{
               height: "80%",
               maxWidth: "1200px",
@@ -76,7 +75,7 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
                     className="inline-block"
                     style={{
                       lineHeight: 1, // Ensures numbers stay visually centered
-                      fontFamily: "'Roboto', sans-serif", // Clean, modern font
+                      fontFamily: "'Roboto', sans-serif', // Clean, modern font
                     }}
                   >
                     {digit}
