@@ -39,21 +39,6 @@ const Target: React.FC<TargetProps> = ({ donationAmount }) => {
     }
   }, [donationAmount, displayedAmount]);
 
-  // Effect to change color periodically
-  useEffect(() => {
-    const colors = ["text-blue-600", "text-red-600", "text-green-600", "text-purple-600"];
-    let currentColorIndex = 0;
-
-    const changeColor = () => {
-      currentColorIndex = (currentColorIndex + 1) % colors.length;
-      setColor(colors[currentColorIndex]);
-    };
-
-    const intervalId = setInterval(changeColor, 5000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
   return (
     <Container className="p-2 h-100">
       <Row className="h-100">
