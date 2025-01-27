@@ -73,7 +73,7 @@ const ItemGrid = () => {
     if (itemCount === 3) return "grid-cols-3";
     if (itemCount <= 6) return "grid-cols-2";
     if (itemCount <= 9) return "grid-cols-3";
-    return "grid-cols-4";
+    return "grid-cols-3";
   };
 
   return (
