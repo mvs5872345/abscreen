@@ -47,7 +47,7 @@ const ItemGrid = () => {
           const uniqueItems = Array.from(
             new Map(combinedItems.map((item) => [item.id, item])).values()
           );
-          return uniqueItems.slice(0, 12);
+          return uniqueItems.slice(0, 9);
         });
       } else {
         console.error("No item data received.");
@@ -72,7 +72,7 @@ const ItemGrid = () => {
     if (itemCount === 2) return "grid-cols-2";
     if (itemCount === 3) return "grid-cols-3";
     if (itemCount <= 6) return "grid-cols-2";
-    if (itemCount <= 12) return "grid-cols-3";
+    if (itemCount <= 9) return "grid-cols-3";
     return "grid-cols-4";
   };
 
